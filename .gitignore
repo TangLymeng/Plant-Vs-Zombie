@@ -1,0 +1,13 @@
+Library/ 
+*.meta
+# Ignore project-specific configurations
+.vscode/
+
+# Ignore log files
+Logs/
+
+# Ignore personal user settings
+UserSettings/
+
+# Ignore specific files related to Visual Studio integration
+Assembly-CSharp.csproj
