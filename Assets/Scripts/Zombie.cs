@@ -28,6 +28,7 @@ public class Zombie : MonoBehaviour
         health = type.health;
         damage = type.damage;
         range = type.range;
+        eatCooldown = type.eatCooldown;
         
         GetComponent<SpriteRenderer>().sprite = type.sprite;
     }
@@ -39,9 +40,6 @@ public class Zombie : MonoBehaviour
             targetPlant = hit.collider.GetComponent<Plant>();
             Eat();
         }
-
-        if(health == 1)
-            GetComponent<SpriteRenderer>().sprite = type.deathSprite;
     }
 
     void Eat() {
@@ -63,10 +61,26 @@ public class Zombie : MonoBehaviour
             transform.position -= new Vector3(speed, 0, 0);
     }
 
-    public void Hit(int damage)
+    public void Hit(int damage, bool freeze)
     {
         health -= damage;
-        if (health <= 0)
-            Destroy(gameObject);
+        if (freeze)
+            Freeze();
+        if (health <= 0) {
+            GetComponent<SpriteRenderer>().sprite = type.deathSprite;
+            Destroy(gameObject, 1);
+        }
+    }
+
+    void Freeze() {
+        CancelInvoke("UnFreeze");
+        GetComponent<SpriteRenderer>().color = Color.blue;
+        speed = type.speed / 2;
+        Invoke("UnFreeze", 5);
+    }
+
+    void UnFreeze() {
+        GetComponent<SpriteRenderer>().color = Color.white;
+        speed = type.speed;
     }
 }

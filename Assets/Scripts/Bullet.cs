@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class bullet : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
     public int damage;
 
     public float speed = 2f;
+
+    public bool freeze;
 
     private void Start(){
         Destroy(gameObject, 10);
@@ -18,7 +20,7 @@ public class bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.TryGetComponent<Zombie>(out Zombie zombie)) {
-            zombie.Hit(damage);
+            zombie.Hit(damage, freeze);
             Destroy(gameObject);
         }
     }   
